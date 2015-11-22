@@ -1,0 +1,56 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include <vector>
+#include <algorithm>
+#include <iterator>
+#include <fstream>
+
+namespace std {
+    template<typename T>
+    std::ostream& operator<<(
+            std::ostream& os,
+            const std::vector<T>& vec)
+    {
+        using std::begin;
+        using std::end;
+        std::copy(begin(vec), end(vec),
+                  std::ostream_iterator<T>(os, " "));
+        return os;
+    }
+    template<typename T>
+    std::istream& operator>>(
+            std::istream& is,
+            std::vector<T>& vec)
+    {
+        std::copy(std::istream_iterator<T>(is),
+                  std::istream_iterator<T>(),
+                  std::back_inserter(vec));
+        return is;
+    }
+};
+
+class Image {
+public :
+    void initialiserImage(int num);
+    Image();
+    void afficherInformations();
+    void load(string fichier);
+    void sauve(std::string fichier, const Image& a);
+    void transfert();
+    void appliquerFiltre();
+    void choixFiltre(std::string choixFiltre);
+private :
+    std::string _type;
+    int _largeur;
+    int _hauteur;
+    std::string _commentaire;
+    int _coeff;
+    int _filtre[3][3];
+    static const unsigned int HAUTEUR_MAX = 1024;
+    static const unsigned int LARGEUR_MAX = 1280;
+    unsigned char _imageIn[HAUTEUR_MAX][LARGEUR_MAX];
+    unsigned char _imageOut[HAUTEUR_MAX][LARGEUR_MAX];
+};
